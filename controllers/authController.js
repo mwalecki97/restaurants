@@ -45,8 +45,9 @@ const signupRestaurant = catchAsync(async (req, res, next) => {
         email: req.body.email,
         password: req.body.password,
         passwordConfirm: req.body.passwordConfirm,
+        restaurantName: req.body.restaurantName,
         cuisine: req.body.cuisine,
-        zipCode: req.body.zipCode,
+        postalCode: req.body.zipCode,
         city: req.body.city,
         state: req.body.state,
         streetName: req.body.streetName,
@@ -83,6 +84,7 @@ const login = catchAsync(async (req, res, next) => {
         res.status(200).json({
         status: 'success',
         type: 'user',
+        id: user._id,
         token
     });
     }else if(restaurant && (await restaurant.correctPassword(password, restaurant.password))){ 
@@ -90,8 +92,10 @@ const login = catchAsync(async (req, res, next) => {
         res.status(200).json({
         status: 'success',
         type: 'restaurant',
+        id: restaurant._id,
         token
     })
+    //Return error if email || password is incorrect
     }else{
         return next(new AppError('Incorrect email or password', 401));
     }
@@ -105,16 +109,16 @@ const protect = catchAsync(async(req,res,next) => {
     if (req.headers.authorization && req.headers.startsWith('Bearer')) {
         token = req.headers.authorization.split(' ')[1];
     } 
-
+    
     if(!token){
-        return next(new AppError('Authorization error, not logged in', 401))
+        return next(new AppError('Authorization error, user not logged in', 401))
     }
 
-
-
     //Verificating token 
-    // const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET)
-    // console.log(decoded)
+     const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET)
+
+
+
     //Check if user still exists
     
 

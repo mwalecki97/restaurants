@@ -15,9 +15,11 @@ router.post('/login', authController.login)                                 //JW
 //Get all restaurants
 router.get('/restaurants', restaurantController.getAll)                     
 
+//Add reservation by id
+
+
 //Get reservations for current logged user
 //WORKING ON IT
-
 
 
 module.exports = router;

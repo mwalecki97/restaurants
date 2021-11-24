@@ -27,12 +27,16 @@ const restaurantSchema = mongoose.Schema({
             message: 'Passwords are not the same!'
         }
     },
+    restaurantName: {
+        type: String, 
+        required: [true, 'Please enter restaurant name']
+    },
     cuisine: {
         type: String,
         required: true
     },
     rating: Number,
-    zipCode: {
+    postalCode: {
         type: String,
         required: true
     },

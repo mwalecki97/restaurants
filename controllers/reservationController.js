@@ -13,7 +13,7 @@ const getAll = catchAsync(async (req, res) => {
     })
 }) 
 
-//Get reservation by Id
+//Get reservation by user Id
 const getId = catchAsync(async (req, res) => {
     const result = await reservation.findById(req.params.id)
 
