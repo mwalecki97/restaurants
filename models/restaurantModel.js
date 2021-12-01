@@ -1,3 +1,4 @@
+const crypto = require('crypto');
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs'); 
@@ -64,8 +65,10 @@ const restaurantSchema = mongoose.Schema({
         type: Date,
         default: Date.now(),
         selected: false
-    }
-
+    },
+    passwordChangedAt: Date,
+    passwordResetToken: String,
+    passwordResetExpires: Date
 })
 
 //PASSWORD ENCRYPTION
@@ -77,13 +80,38 @@ restaurantSchema.pre('save', async function(next){
      this.password = await bcrypt.hash(this.password, 12);
 
     //Delete passwordConfirm field
-     this.passwordConfirm = undefined;
+     this.passwordConfirm = undefined; 
      next();
 })
+
+//CHANGING PASSWORDCHANGEDAT
+restaurantSchema.pre('save', function(next){
+    if(!this.isModified('password') || this.isNew) return next();
+
+    this.passwordChangedAt = Date.now() - 1000;
+    next();
+});
 
 //PASSWORD COMPARE
 restaurantSchema.methods.correctPassword = async function(candidate, password) {
     return await bcrypt.compare(candidate, password)
 };
+
+//CREATE PASSWORD RESET TOKEN
+restaurantSchema.methods.createResetToken = function(){
+    const resetToken = crypto.randomBytes(32).toString('hex');
+
+    this.passwordResetToken = crypto
+    .createHash('sha256')
+    .update(resetToken)
+    .digest('hex');
+
+    console.log({resetToken}, this.passwordResetToken)
+
+    this.passwordResetExpires = Date.now()+10*60*1000;
+    return resetToken;
+}
+
+
 
 module.exports = mongoose.model('Restaurant', restaurantSchema);

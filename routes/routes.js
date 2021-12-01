@@ -4,7 +4,7 @@ const restaurantController = require('../controllers/restaurantController')
 const router = express.Router();
 
 //New user 
-router.post('/signupUser', authController.signupUser);                      //JWT
+router.post('/signupUser', authController.signupUser)                      //JWT
 
 //New restaurant
 router.post('/signupRestaurant', authController.signupRestaurant)           //JWT
@@ -13,13 +13,15 @@ router.post('/signupRestaurant', authController.signupRestaurant)           //JW
 router.post('/login', authController.login)                                 //JWT
 
 //Get all restaurants
-router.get('/restaurants', restaurantController.getAll)                     
+router.get('/restaurants', restaurantController.getAll)
 
-//Add reservation by id
+//Get restaurant by id
+router.get('/restaurants/:id', restaurantController.getId) 
 
+//Reset password
+router.post('/forgotPassword', authController.forgotPassword)
+router.patch('/resetPassword/:token', authController.resetPassword)
 
-//Get reservations for current logged user
-//WORKING ON IT
 
 
 module.exports = router;

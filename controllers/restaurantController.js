@@ -23,7 +23,6 @@ const getAll = catchAsync(async (req, res) => {
     })
 })
 
-
 //Get restaurant by id
 const getId = catchAsync(async (req, res) => {
         const result = await restaurant.findById(req.params.id)

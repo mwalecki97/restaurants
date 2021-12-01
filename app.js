@@ -16,6 +16,12 @@ app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
+app.use((req, res, next)=>{
+  req.requestTime = new Date().toISOString();
+  console.log(req.headers)
+  next();
+})
+
 //Router import  
 const userRouter = require('./routes/routes')
 
