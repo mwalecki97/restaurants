@@ -7,7 +7,7 @@ const restaurantSchema = mongoose.Schema({
     email: {
         type: String, 
         required: [true, 'Please enter your email'],
-        unique: true,
+        unique: [true, 'Account with this email exists'],
         lowercase: true,
         validate: [validator.isEmail, 'Please enter valid emial']
     },
@@ -35,6 +35,10 @@ const restaurantSchema = mongoose.Schema({
     cuisine: {
         type: String,
         required: true
+    },
+    phone: {
+        type: Number,
+        required: [true, 'Please enter your phone number']
     },
     rating: Number,
     postalCode: {
